@@ -21,13 +21,16 @@ if (colTile < 10) {
   colTile <- paste("0", colTile, sep = "")
 }
 
-
-getData('SRTM', lon=lon, lat=lat, path='data/srtm/')
 file_path <- paste(srtm_path, "srtm_", colTile, "_", rowTile, ".tif" ,sep = "")
+
+if (!file.exists(file_path)){
+  getData('SRTM', lon=lon, lat=lat, path='data/srtm/')
+}
+
 srtm_img <- raster(file_path)
 plot(srtm_img)
 hist(srtm_img, main="Distribution of elevation values", col= "purple", maxpixels=22000000)
-image(srtm_img, zlim=c(6000, 8000))
+image(srtm_img, zlim=c(8000, 9000))
 elev_countur_file = paste(tempfile(), "elev_contur.shp", sep="")
 elev_contour <- gdal_contour(src_filename=file_path, dst_filename = elev_countur_file,
                                a="Elevation",i=1000,output_Vector=TRUE)
